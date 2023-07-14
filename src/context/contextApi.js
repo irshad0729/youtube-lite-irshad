@@ -10,7 +10,7 @@ export const AppContext = (props) => {
   const [mobileMenu, setMobileMenu] = useState(false);
 
   useEffect(() => {
-    // fetchSelectedCategoriesData(selectCategories);
+    fetchSelectedCategoriesData(selectCategories);
   }, [selectCategories]);
 
   const fetchSelectedCategoriesData = (query) => {

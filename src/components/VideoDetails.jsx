@@ -34,7 +34,7 @@ const VideoDetails = () => {
     setLoading(true);
     fetchDataFromApi(`video/related-contents/?id=${id}`).then((res) => {
       console.log("video related containes", res);
-      setVideo(res);
+      setRelatedVideos(res);
       setLoading(false);
     });
   };
@@ -97,8 +97,8 @@ const VideoDetails = () => {
 
         <div className="flex flex-col py-6 px-4 overflow-y-auto lg:w-[350px] xl:w-[400px]">
           {relatedVideos?.contents?.map((item, index) => {
-            if (item.type !== "video")
-              return <SuggestionVideoCard key={index} video={item?.video} />;
+            if (item?.type !== "video") return false;
+            return <SuggestionVideoCard key={index} video={item?.video} />;
           })}
         </div>
       </div>

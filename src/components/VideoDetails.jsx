@@ -49,7 +49,7 @@ const VideoDetails = () => {
               width="100%"
               height="100%"
               style={{ backgroundColor: "#000000" }}
-            //   playing={true}
+              //   playing={true}
             />
           </div>
           <div className="text-white font-bold text-sm md:text-xl mt-4 line-clamp-2">
@@ -80,17 +80,21 @@ const VideoDetails = () => {
             <div className="flex text-white mt-4 md:mt-0">
               <div className="flex items-center justify-center h-11 px-6 rounded-3xl bg-white/[0.15]">
                 <AiOutlineLike className="text-xl text-white mr-2" />
-                <span>{`${abbreviateNumber(
-                  video?.stats?.likes,
-                  2
-                )} likes`}</span>
+                {video?.stats?.likes && (
+                  <span>{`${abbreviateNumber(
+                    video?.stats?.likes,
+                    2
+                  )} likes`}</span>
+                )}
               </div>
               <div className="flex items-center justify-center h-11 px-6 rounded-3xl bg-white/[0.15] ml-4">
                 <AiOutlineLike className="text-xl text-white mr-2" />
-                <span>{`${abbreviateNumber(
-                  video?.stats?.views,
-                  2
-                )} views`}</span>
+                {video?.stats?.views && (
+                  <span>{`${abbreviateNumber(
+                    video?.stats?.views,
+                    2
+                  )} views`}</span>
+                )}
               </div>
             </div>
           </div>

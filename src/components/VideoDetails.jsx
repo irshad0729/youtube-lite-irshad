@@ -6,14 +6,18 @@ import { AiOutlineLike } from "react-icons/ai";
 import { abbreviateNumber } from "js-abbreviation-number";
 
 import { fetchDataFromApi } from "../utils/api";
-import { Context } from "../context/contextApi";
 import SuggestionVideoCard from "./SuggestionVideoCard";
+import { useSelector, useDispatch } from "react-redux";
+import { setLoading } from "../redux/youtubeApiSlice";
 
 const VideoDetails = () => {
   const [video, setVideo] = useState();
   const [relatedVideos, setRelatedVideos] = useState();
   const { id } = useParams();
-  const { setLoading } = useContext(Context);
+  const dispatch = useDispatch();
+  const { loading, searchResults, selectCategories, mobileMenu } = useSelector(
+    (state) => state.youtubeApi
+  );
 
   useEffect(() => {
     document.getElementById("root").classList.add("custom-h");
@@ -22,20 +26,19 @@ const VideoDetails = () => {
   }, [id]);
 
   const fetchVideoDetails = () => {
-    setLoading(true);
+    dispatch(setLoading(true));
     fetchDataFromApi(`video/details/?id=${id}`).then((res) => {
       console.log("video details", res);
       setVideo(res);
-      setLoading(false);
+      dispatch(setLoading(false));
     });
   };
 
   const fetchRelatedVideos = () => {
-    setLoading(true);
+    dispatch(setLoading(true));
     fetchDataFromApi(`video/related-contents/?id=${id}`).then((res) => {
-      console.log("video related containes", res);
       setRelatedVideos(res);
-      setLoading(false);
+      dispatch(setLoading(false));
     });
   };
   return (

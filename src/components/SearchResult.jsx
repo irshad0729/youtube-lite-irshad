@@ -1,24 +1,26 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { fetchDataFromApi } from "../utils/api";
-import { Context } from "../context/contextApi";
 import LeftNav from "./LeftNav";
 import SearchResultVideoCard from "./SearchResultVideoCard";
+import { useDispatch, useSelector } from "react-redux";
+import { setLoading } from "../redux/youtubeApiSlice";
 
 const SearchResult = () => {
   const [result, setResult] = useState();
   const { searchQuery } = useParams();
-  const { setLoading } = useContext(Context);
+  const dispatch = useDispatch();
+  const { loading, searchResults, selectCategories, mobileMenu } = useSelector(
+    (state) => state.youtubeApi
+  );
   useEffect(() => {
     document.getElementById("root").classList.add("custom-h");
-
     fetchSearchResults();
   }, [searchQuery]);
 
   const fetchSearchResults = () => {
-    setLoading(true);
+    dispatch(setLoading(true));
     fetchDataFromApi(`search/?q=${searchQuery}`).then((res) => {
-      console.log(res);
       setResult(res?.contents);
       setLoading(false);
     });

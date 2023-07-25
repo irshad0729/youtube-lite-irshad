@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, {  useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import ytLogo from "../images/yt-logo.png";
@@ -10,13 +10,17 @@ import { RiVideoAddLine } from "react-icons/ri";
 import { FiBell } from "react-icons/fi";
 import { CgClose } from "react-icons/cg";
 
-import { Context } from "../context/contextApi";
+import { useDispatch, useSelector } from "react-redux";
+import { setMobileMenu, SetSelectCatergories } from "../redux/youtubeApiSlice";
 import Loader from "../shared/loader";
 
 const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const dispatch = useDispatch();
 
-  const { loading, mobileMenu, setMobileMenu } = useContext(Context);
+  const { loading, searchResults, selectCategories, mobileMenu } = useSelector(
+    (state) => state.youtubeApi
+  );
 
   const navigate = useNavigate();
 
@@ -30,7 +34,7 @@ const Header = () => {
   };
 
   const mobileMenuToggle = () => {
-    setMobileMenu(!mobileMenu);
+    dispatch(setMobileMenu(!mobileMenu));
   };
 
   const { pathname } = useLocation();

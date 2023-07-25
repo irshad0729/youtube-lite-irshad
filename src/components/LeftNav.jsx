@@ -3,33 +3,45 @@ import { useNavigate } from "react-router-dom";
 
 import LeftNavMenuItem from "./LeftNavMenuItem";
 import { categories } from "../utils/constants";
-import { Context } from "../context/contextApi";
-import { IoGitMerge } from "react-icons/io5";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setSelectCatergories,
+  setMobileMenu,
+  updateApi,
+} from "../redux/youtubeApiSlice";
+import { fetchDataFromApi } from "../utils/api";
 const LeftNav = () => {
-  const { selectCategories, SetSelectCatergories, mobileMenu } =
-    useContext(Context);
-  const navigate = useNavigate();
+  const { loading, searchResults, selectCategories, mobileMenu } = useSelector(
+    (state) => state.youtubeApi
+  );
 
-   const clickHandler = (name, type) => {
-     switch (type) {
-       case "category":
-         return SetSelectCatergories(name);
-       case "home":
-         return SetSelectCatergories(name);
-       case "menu":
-         return false;
-       default:
-         break;
-     }
-   };
-console.log({ mobileMenu });
+  console.log("feed:", loading, searchResults, selectCategories, mobileMenu);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const clickHandler = async (name, type) => {
+    console.log("click handler leftnavbar name type", name, type);
+
+    let query = name;
+    fetchDataFromApi(`search/?q=${query}`).then(({ contents }) => {
+      switch (type) {
+        case "category":
+          return dispatch(updateApi({ query, mobileMenu, contents, loading }));
+        case "home":
+          return dispatch(updateApi({ query, mobileMenu, contents, loading }));
+        case "menu":
+          return false;
+        default:
+          break;
+      }
+    });
+  };
   return (
     <div
       className={`md:block w-[240px] overflow-y-auto h-full py-4 bg-black absolute md:relative z-10 translate-x-[-240px] md:translate-x-0 transition-all ${
-        mobileMenu ? "translate-x-1" : ""
+        mobileMenu ? "translate-x-2" : ""
       }`}
     >
-        
       <div className="flex px-5 flex-col">
         {categories.map((item) => {
           return (
